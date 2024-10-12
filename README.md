@@ -15,13 +15,20 @@
     - [Why It Rocks 🎸](#why-it-rocks-)
 - [Usage Example](#usage-examples)
     - [`FFormField`](#fformfield)
+        - [Example](#example)
+        - [`KeyedField`](#and-you-can-add-keyedfield-mixin-to-get-a-unique-key-for-identifying-the-form-field-widget)
+        - [`AsyncField`](#and-you-can-use-asyncvalidator)
         - [`FFormField` API](#fformfield-api)
     - [`FForm`](#fform)
-        - [`FForm` API](#fform-api)
+      - [Example](#example-1)
+      - [`FForm` API](#fform-api)
     - [`FFormBuilder`](#fformbuilder)
+      - [Example](#example-2)
     - [`FFormProvider`](#fformprovider)
+      - [Example](#example-3)
     - [`FFormException`](#fformexception)
-        - [`FFormException` API](#fformexception-api)
+      - [Example](#example-4)
+      - [`FFormException` API](#fformexception-api)
 
 
 
@@ -51,6 +58,7 @@ FForm is a high-level Flutter package designed to make form creation and managem
 - `FFormException`: A base class for creating custom exceptions for form fields, enabling you to define custom validation rules and error messages.
 - `FFormProvider`: A widget that allows you to access the form in the widget tree without passing it as a parameter.
 - `KeyedField`: A mixin that provides a unique key for identifying the form field widget, used to manage the state of the widget and access it in the widget tree.
+- `AsyncField`: A mixin that provides asynchronous validation for form fields, allowing you to validate data against external sources or APIs.
 
 ## Why It Rocks 🎸
 
@@ -60,6 +68,8 @@ FForm is a high-level Flutter package designed to make form creation and managem
 - **Reactive Forms for the Win**: Leverages streams for tracking form state changes, ensuring your UI is always in sync.
 - **Multiple Forms, No Problem**: Create multiple forms with custom fields and validation rules, all managed seamlessly by FForm.
 - **Custom Exceptions for Custom Needs**: Define custom exceptions for form fields to handle complex validation rules and error messages with ease.
+- **AsyncValidator**: Supports asynchronous validation for form fields, allowing you to validate data against external sources or APIs.
+
 
 ## Previews
 
@@ -107,7 +117,7 @@ class EmailField extends FFormField<String, EmailError> {
 }
 ```
 
-And you can add KeyedField mixin to get a unique key for identifying the form field widget.
+#### And you can add KeyedField mixin to get a unique key for identifying the form field widget.
 
 ```dart
 class EmailField extends FFormField<String, EmailError> with KeyedField {
@@ -122,6 +132,28 @@ class EmailField extends FFormField<String, EmailError> with KeyedField {
 }
 
 // and get GlobalKey -> form.email.key 
+```
+
+#### And you can use AsyncValidator
+
+```dart
+class EmailField extends FFormField<String, EmailError> with AsyncField<String, EmailError> {
+
+  EmailField({required String value}) : super(value);
+
+  @override
+  EmailError? validator(value) {
+    if (value.isEmpty) return EmailError.empty;
+    return null;
+  }
+
+  @override
+  Future<EmailError?> asyncValidator(value) async {
+    await Future.delayed(Duration(seconds: 1));
+    if (!value.contains('@')) return EmailError.not;
+    return null;
+  }
+}
 ```
 
 

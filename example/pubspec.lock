@@ -61,10 +61,10 @@ packages:
     dependency: "direct main"
     description:
       name: fform
-      sha256: "0b040c335ab4fb9f93c9fdb5bb56a0925cba85c2ecc9982c6d05cb8c46bcae51"
+      sha256: "992fc544fafa758c92392a54990e642412089ccbfb7977fcdc7429cdd93b54fb"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   fform_flutter:
     dependency: "direct main"
     description:
